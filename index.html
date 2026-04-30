@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leave Application Form – Bridge Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f0f0f;
+        --paper: #f4f2ee;
+        --rule: #2c2c2c;
+        --accent: #c0392b;
+        --muted: #888;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "IBM Plex Sans", sans-serif;
+        background: #e8e3d8;
+        min-height: 100vh;
+      }
+      /* ── FORM PREVIEW ── */
+      #preview {
+        overflow: hidden;
+        font-family: "IBM Plex Sans", sans-serif;
+        background: #fff;
+        color: #000;
+        width: 100%;
+        border: 2px solid #000;
+      }
+      .preview-header-company {
+        border-bottom: 2px solid #000;
+        padding: 10px 14px 6px;
+      }
+      .company-name {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .company-address {
+        font-size: 10px;
+        color: #333;
+      }
+      .form-title-bar {
+        background: #fff;
+        border-bottom: 2px solid #000;
+        text-align: center;
+        padding: 5px;
+        font-weight: 600;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+      }
+      .form-row {
+        display: flex;
+        border-bottom: 1px solid #000;
+      }
+      .form-cell {
+        padding: 6px 10px;
+        font-size: 10px;
+        border-right: 1px solid #000;
+        position: relative;
+      }
+      .form-cell:last-child {
+        border-right: none;
+      }
+      .cell-label {
+        font-size: 9px;
+        color: #333;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .cell-value {
+        font-size: 11px;
+        font-weight: 500;
+        min-height: 16px;
+      }
+      .emp-status-box {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        font-size: 9px;
+      }
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .check-box {
+        width: 10px;
+        height: 10px;
+        border: 1px solid #000;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+      }
+      .leave-types-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3px 6px;
+        margin-top: 4px;
+      }
+      .leave-type-item {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 9px;
+      }
+      .leave-underline {
+        width: 30px;
+        border-bottom: 1px solid #000;
+        display: inline-block;
+        height: 10px;
+        font-size: 9px;
+        text-align: center;
+      }
+      .purpose-cell {
+        padding: 6px 10px 24px;
+        font-size: 10px;
+        border-bottom: 1px solid #000;
+      }
+      .duration-header {
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        padding: 4px;
+        border-bottom: 1px solid #000;
+        background: #fff;
+      }
+      .duration-sub {
+        display: flex;
+        border-bottom: 1px solid #000;
+      }
+      .duration-dates {
+        flex: 2;
+        border-right: 1px solid #000;
+        text-align: center;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 3px;
+        letter-spacing: 0.06em;
+      }
+      .duration-hours {
+        flex: 1;
+        text-align: center;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 3px;
+        letter-spacing: 0.06em;
+      }
+      .duration-row {
+        display: flex;
+        border-bottom: 1px solid #000;
+      }
+      .duration-from {
+        flex: 1;
+        border-right: 1px solid #000;
+        padding: 6px 10px 20px;
+        font-size: 9px;
+      }
+      .duration-to {
+        flex: 1;
+        border-right: 1px solid #000;
+        padding: 6px 10px 20px;
+        font-size: 9px;
+      }
+      .duration-hrs-val {
+        flex: 1;
+        padding: 6px 10px 20px;
+        font-size: 9px;
+      }
+      .sig-row {
+        display: flex;
+        border-bottom: 1px solid #000;
+      }
+      .sig-cell {
+        flex: 1;
+        border-right: 1px solid #000;
+        padding: 6px 10px 32px;
+        font-size: 9px;
+      }
+      .sig-cell:last-child {
+        border-right: none;
+      }
+      .sig-name {
+        font-size: 10px;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 2px;
+      }
+      .sig-footer-row {
+        display: flex;
+      }
+      .sig-footer-cell {
+        flex: 1;
+        border-right: 1px solid #000;
+        text-align: center;
+        font-size: 9px;
+        padding: 4px 6px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+      .sig-footer-cell:last-child {
+        border-right: none;
+      }
+
+      /* ── UI SHELL ── */
+      .app-header {
+        background: var(--ink);
+        color: #fff;
+        padding: 18px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .app-title {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        letter-spacing: 0.15em;
+        color: #ccc;
+      }
+      .app-brand {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      input,
+      select,
+      textarea {
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      .field-group label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--rule);
+      }
+      .field-group input,
+      .field-group select,
+      .field-group textarea {
+        background: #fff;
+        border: 1.5px solid #ccc;
+        border-radius: 4px;
+        padding: 8px 10px;
+        font-size: 13px;
+        width: 100%;
+        color: var(--ink);
+        transition: border-color 0.2s;
+        outline: none;
+      }
+      .field-group input:focus,
+      .field-group select:focus,
+      .field-group textarea:focus {
+        border-color: var(--accent);
+      }
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px 8px;
+      }
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .checkbox-item input {
+        width: auto;
+      }
+
+      .btn-print {
+        background: var(--accent);
+        color: #fff;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        border: none;
+        padding: 12px 28px;
+        cursor: pointer;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+        border-radius: 3px;
+      }
+      .btn-print:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+      }
+      .btn-reset {
+        background: transparent;
+        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        border: 1.5px solid var(--rule);
+        padding: 12px 22px;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background 0.2s;
+      }
+      .btn-reset:hover {
+        background: #e0ddd6;
+      }
+
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #preview,
+        #preview * {
+          visibility: visible;
+        }
+        #preview {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          right: 20px;
+          width: calc(100% - 40px);
+          border: 2px solid #000 !important;
+          transform: none !important;
+          box-shadow: none;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        /* Ensure all internal borders print */
+        .form-row,
+        .form-cell,
+        .sig-row,
+        .sig-cell,
+        .sig-footer-row,
+        .sig-footer-cell,
+        .duration-row,
+        .duration-from,
+        .duration-to,
+        .duration-hrs-val,
+        .duration-sub,
+        .duration-dates,
+        .duration-hours,
+        .purpose-cell,
+        .preview-header-company,
+        .form-title-bar,
+        .duration-header {
+          border-color: #000 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="app-header">
+      <div>
+        <div class="app-title">DOCUMENT GENERATOR</div>
+        <div class="app-brand">Leave Application Form</div>
+      </div>
+      <div
+        style="
+          font-size: 11px;
+          color: #888;
+          font-family: &quot;IBM Plex Mono&quot;, monospace;
+        "
+      >
+        Bridge Digital Transformations Inc.
+      </div>
+    </div>
+
+    <div
+      class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 xl:grid-cols-2 gap-10"
+    >
+      <!-- LEFT: INPUT PANEL -->
+      <div>
+        <div
+          style="
+            font-family: &quot;IBM Plex Mono&quot;, monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+          "
+        >
+          Fill in the fields below
+        </div>
+
+        <div class="space-y-5">
+          <!-- Employee Name & Position -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="field-group space-y-1">
+              <label>Employee's Name</label>
+              <input
+                type="text"
+                id="empName"
+                placeholder="Full Name"
+                oninput="update()"
+              />
+            </div>
+            <div class="field-group space-y-1">
+              <label>Position</label>
+              <input
+                type="text"
+                id="position"
+                placeholder="Job Title"
+                oninput="update()"
+              />
+            </div>
+          </div>
+
+          <!-- Employment Status -->
+          <div class="field-group space-y-1">
+            <label>Employment Status</label>
+            <div class="flex gap-6 mt-1">
+              <label class="flex items-center gap-2 text-sm cursor-pointer">
+                <input
+                  type="radio"
+                  name="empStatus"
+                  value="REG"
+                  onchange="update()"
+                  checked
+                />
+                Regular
+              </label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer">
+                <input
+                  type="radio"
+                  name="empStatus"
+                  value="PROB"
+                  onchange="update()"
+                />
+                Probationary
+              </label>
+            </div>
+          </div>
+
+          <!-- Date Filed -->
+          <div class="field-group space-y-1" style="max-width: 220px">
+            <label>Date Filed</label>
+            <input type="date" id="dateFiled" oninput="update()" />
+          </div>
+
+          <!-- Type of Leave -->
+          <div class="field-group space-y-2">
+            <label>Type of Leave Applied For</label>
+            <div class="checkbox-grid mt-1">
+              <label class="checkbox-item"
+                ><input type="checkbox" value="VL" onchange="update()" />
+                VL</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="BRL" onchange="update()" />
+                BRL</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="ML" onchange="update()" />
+                ML</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="AWP" onchange="update()" />
+                AWP</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="SL" onchange="update()" />
+                SL</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="EL" onchange="update()" />
+                EL</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="BL" onchange="update()" />
+                BL</label
+              >
+              <label class="checkbox-item"
+                ><input type="checkbox" value="PL" onchange="update()" />
+                PL</label
+              >
+            </div>
+          </div>
+
+          <!-- Purpose -->
+          <div class="field-group space-y-1">
+            <label>Purpose of Leave</label>
+            <textarea
+              id="purpose"
+              rows="3"
+              placeholder="State the reason for leave…"
+              oninput="update()"
+            ></textarea>
+          </div>
+
+          <!-- Duration -->
+          <div class="grid grid-cols-3 gap-4">
+            <div class="field-group space-y-1">
+              <label>From</label>
+              <input type="date" id="leaveFrom" oninput="update()" />
+            </div>
+            <div class="field-group space-y-1">
+              <label>To</label>
+              <input type="date" id="leaveTo" oninput="update()" />
+            </div>
+            <div class="field-group space-y-1">
+              <label>No. Hours/Days</label>
+              <input
+                type="text"
+                id="noHours"
+                placeholder="e.g. 8 hrs / 1 day"
+                oninput="update()"
+              />
+            </div>
+          </div>
+
+          <!-- Noted By -->
+          <div class="field-group space-y-1" style="max-width: 300px">
+            <label>Noted By (Chief-of-Staff)</label>
+            <input
+              type="text"
+              id="notedBy"
+              value="Elkin Lao"
+              oninput="update()"
+            />
+          </div>
+
+          <!-- Approved By -->
+          <div class="field-group space-y-1" style="max-width: 300px">
+            <label>Approved By</label>
+            <input
+              type="text"
+              id="approvedBy"
+              placeholder="Name"
+              oninput="update()"
+            />
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex gap-3 mt-8">
+          <button class="btn-print" onclick="window.print()">
+            ⎙ Print / Save PDF
+          </button>
+          <button class="btn-reset" onclick="resetForm()">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: PREVIEW -->
+      <div>
+        <div
+          style="
+            font-family: &quot;IBM Plex Mono&quot;, monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+          "
+        >
+          Live Preview
+        </div>
+        <div style="overflow-x: auto">
+          <div id="preview">
+            <!-- COMPANY HEADER -->
+            <div class="preview-header-company">
+              <div class="company-name">
+                BRIDGE DIGITAL TRANSFORMATIONS INC.
+              </div>
+              <div class="company-address">
+                BiBu Square, Liwayway Village, Magugpo North Tagum City, DDN
+              </div>
+            </div>
+
+            <!-- FORM TITLE -->
+            <div class="form-title-bar">LEAVE APPLICATION FORM</div>
+
+            <!-- ROW 1: Name / Position / Status -->
+            <div class="form-row">
+              <div class="form-cell" style="flex: 2.5">
+                <span class="cell-label">EMPLOYEE'S NAME</span>
+                <div class="cell-value" id="p-empName">&nbsp;</div>
+              </div>
+              <div class="form-cell" style="flex: 2">
+                <span class="cell-label">POSITION</span>
+                <div class="cell-value" id="p-position">&nbsp;</div>
+              </div>
+              <div class="form-cell" style="flex: 1; min-width: 90px">
+                <span class="cell-label">Employment Status</span>
+                <div class="emp-status-box">
+                  <div class="status-row">
+                    <span class="check-box" id="p-reg-box"></span> REG
+                  </div>
+                  <div class="status-row">
+                    <span class="check-box" id="p-prob-box"></span> PROB
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ROW 2: Leave Types + Date Filed -->
+            <div class="form-row">
+              <div class="form-cell" style="flex: 3">
+                <span class="cell-label">Type of Leave Applied for</span>
+                <div class="leave-types-grid" id="p-leaveTypes">
+                  <!-- populated by JS -->
+                </div>
+              </div>
+              <div class="form-cell" style="flex: 1.2">
+                <span class="cell-label">Date Filed</span>
+                <div class="cell-value" id="p-dateFiled">&nbsp;</div>
+              </div>
+            </div>
+
+            <!-- ROW 3: Purpose -->
+            <div class="purpose-cell">
+              <span class="cell-label">Purpose of Leave</span>
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 600;
+                  margin-top: 4px;
+                  white-space: pre-wrap;
+                "
+                id="p-purpose"
+              >
+                &nbsp;
+              </div>
+            </div>
+
+            <!-- DURATION SECTION -->
+            <div class="duration-header">DURATION OF LEAVE</div>
+            <div class="duration-sub">
+              <div class="duration-dates">INCLUSIVE DATES</div>
+              <div class="duration-hours">NO. HOURS/DAYS</div>
+            </div>
+            <div class="duration-row">
+              <div class="duration-from">
+                FROM<br />
+                <div
+                  style="font-size: 11px; font-weight: 600; margin-top: 6px"
+                  id="p-leaveFrom"
+                >
+                  &nbsp;
+                </div>
+              </div>
+              <div class="duration-to">
+                TO<br />
+                <div
+                  style="font-size: 11px; font-weight: 600; margin-top: 6px"
+                  id="p-leaveTo"
+                >
+                  &nbsp;
+                </div>
+              </div>
+              <div class="duration-hrs-val">
+                <div
+                  style="font-size: 11px; font-weight: 600; margin-top: 18px"
+                  id="p-noHours"
+                >
+                  &nbsp;
+                </div>
+              </div>
+            </div>
+
+            <!-- SIGNATURES -->
+            <div class="sig-row">
+              <div class="sig-cell" style="flex: 1">&nbsp;</div>
+              <div class="sig-cell" style="flex: 1">&nbsp;</div>
+              <div class="sig-cell" style="flex: 1">
+                <div class="sig-name" id="p-notedBy">Elkin Lao</div>
+              </div>
+              <div class="sig-cell" style="flex: 1">
+                <div class="sig-name" id="p-approvedBy">&nbsp;</div>
+              </div>
+            </div>
+
+            <!-- FOOTER LABELS -->
+            <div class="sig-footer-row">
+              <div class="sig-footer-cell">Employee's Signature</div>
+              <div class="sig-footer-cell">Immediate Supervisor</div>
+              <div class="sig-footer-cell">Chief-of-Staff</div>
+              <div class="sig-footer-cell">NGT &nbsp;/&nbsp; DTK</div>
+            </div>
+          </div>
+        </div>
+        <div
+          style="
+            font-size: 10px;
+            color: #999;
+            font-family: &quot;IBM Plex Mono&quot;, monospace;
+            margin-top: 10px;
+          "
+        >
+          760px fixed-width · optimised for A4 print
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const LEAVE_TYPES = ["VL", "BRL", "ML", "AWP", "SL", "EL", "BL", "PL"];
+
+      function fmt(dateStr) {
+        if (!dateStr) return "";
+        const [y, m, d] = dateStr.split("-");
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        return `${months[+m - 1]} ${+d}, ${y}`;
+      }
+
+      function update() {
+        // Employee name & position
+        const name = document.getElementById("empName").value;
+        const pos = document.getElementById("position").value;
+        document.getElementById("p-empName").textContent = name || "\u00A0";
+        document.getElementById("p-position").textContent = pos || "\u00A0";
+
+        // Employment status
+        const status =
+          document.querySelector('input[name="empStatus"]:checked')?.value ||
+          "REG";
+        document.getElementById("p-reg-box").textContent =
+          status === "REG" ? "✓" : "";
+        document.getElementById("p-prob-box").textContent =
+          status === "PROB" ? "✓" : "";
+
+        // Date filed
+        const df = document.getElementById("dateFiled").value;
+        document.getElementById("p-dateFiled").textContent = df
+          ? fmt(df)
+          : "\u00A0";
+
+        // Leave types
+        const checked = [
+          ...document.querySelectorAll(".checkbox-item input:checked"),
+        ].map((el) => el.value);
+        const leaveContainer = document.getElementById("p-leaveTypes");
+        leaveContainer.innerHTML = "";
+        // Build grid: row1: VL BRL ML AWP, row2: EL BL PL SL
+        const row1 = ["VL", "BRL", "ML", "AWP"];
+        const row2 = ["EL", "BL", "PL", "SL"];
+        [row1, row2].forEach((row) => {
+          const rowDiv = document.createElement("div");
+          rowDiv.style.cssText = "display:flex;gap:14px;";
+          row.forEach((lt) => {
+            const span = document.createElement("span");
+            span.className = "leave-type-item";
+            const ul = document.createElement("span");
+            ul.className = "leave-underline";
+            ul.textContent = checked.includes(lt) ? "✓" : "";
+            span.appendChild(ul);
+            span.append(" " + lt);
+            rowDiv.appendChild(span);
+          });
+          leaveContainer.appendChild(rowDiv);
+        });
+
+        // Purpose
+        const purpose = document.getElementById("purpose").value;
+        document.getElementById("p-purpose").textContent = purpose || "\u00A0";
+
+        // Duration
+        const lf = document.getElementById("leaveFrom").value;
+        const lt = document.getElementById("leaveTo").value;
+        const nh = document.getElementById("noHours").value;
+        document.getElementById("p-leaveFrom").textContent = lf
+          ? fmt(lf)
+          : "\u00A0";
+        document.getElementById("p-leaveTo").textContent = lt
+          ? fmt(lt)
+          : "\u00A0";
+        document.getElementById("p-noHours").textContent = nh || "\u00A0";
+
+        // Noted by / Approved by
+        const noted = document.getElementById("notedBy").value;
+        const approved = document.getElementById("approvedBy").value;
+        document.getElementById("p-notedBy").textContent = noted || "\u00A0";
+        document.getElementById("p-approvedBy").textContent =
+          approved || "\u00A0";
+      }
+
+      function resetForm() {
+        document
+          .querySelectorAll("input[type=text], input[type=date], textarea")
+          .forEach((el) => (el.value = ""));
+        document
+          .querySelectorAll(".checkbox-item input")
+          .forEach((el) => (el.checked = false));
+        document.querySelector('input[name="empStatus"][value="REG"]').checked =
+          true;
+        document.getElementById("notedBy").value = "Elkin Lao";
+        update();
+      }
+
+      // Initialise date to today
+      document.getElementById("dateFiled").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      update();
+    </script>
+  </body>
+</html>
