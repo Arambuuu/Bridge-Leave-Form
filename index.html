@@ -5,19 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leave Application Form – Bridge Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --ink: #0f0f0f;
-        --paper: #f4f2ee;
-        --rule: #2c2c2c;
-        --accent: #c0392b;
-        --muted: #888;
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --primary: 240 5.9% 10%;
+        --primary-foreground: 0 0% 98%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --ring: 240 5.9% 10%;
+        --radius: 0.625rem;
       }
       * { box-sizing: border-box; }
-      body { font-family: "IBM Plex Sans", sans-serif; background: #e8e3d8; min-height: 100vh; }
+      body {
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        background: hsl(var(--muted));
+        color: hsl(var(--foreground));
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
 
-      /* ── FORM PREVIEW ── */
+      /* ── shadcn-style primitives ── */
+      .sc-card {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: calc(var(--radius) + 2px);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+      }
+      .sc-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: hsl(var(--foreground));
+        line-height: 1;
+        display: inline-block;
+        margin-bottom: 6px;
+      }
+      .sc-input, .sc-textarea, .sc-select {
+        width: 100%;
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--input));
+        border-radius: var(--radius);
+        padding: 8px 12px;
+        font-size: 13.5px;
+        color: hsl(var(--foreground));
+        font-family: "Inter", sans-serif;
+        outline: none;
+        transition: box-shadow 0.15s, border-color 0.15s;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.02);
+      }
+      .sc-input::placeholder, .sc-textarea::placeholder { color: hsl(var(--muted-foreground)); }
+      .sc-input:focus, .sc-textarea:focus, .sc-select:focus {
+        border-color: hsl(var(--ring));
+        box-shadow: 0 0 0 3px hsl(var(--ring) / 0.12);
+      }
+      .sc-textarea { resize: vertical; min-height: 76px; font-family: "Inter", sans-serif; }
+
+      .sc-section-title {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: hsl(var(--muted-foreground));
+      }
+
+      /* radio / checkbox — shadcn-esque square/circle controls */
+      .sc-radio, .sc-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 1px solid hsl(var(--input));
+        background: hsl(var(--card));
+        display: inline-grid;
+        place-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .sc-radio { border-radius: 999px; }
+      .sc-checkbox { border-radius: 4px; }
+      .sc-radio::before {
+        content: "";
+        width: 7px; height: 7px; border-radius: 999px;
+        background: hsl(var(--primary-foreground));
+        transform: scale(0);
+        transition: transform 0.1s;
+      }
+      .sc-checkbox::before {
+        content: "";
+        width: 9px; height: 9px;
+        transform: scale(0);
+        transition: transform 0.1s;
+        background: hsl(var(--primary-foreground));
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      }
+      .sc-radio:checked, .sc-checkbox:checked {
+        background: hsl(var(--primary));
+        border-color: hsl(var(--primary));
+      }
+      .sc-radio:checked::before, .sc-checkbox:checked::before { transform: scale(1); }
+      .sc-radio:focus-visible, .sc-checkbox:focus-visible {
+        box-shadow: 0 0 0 3px hsl(var(--ring) / 0.25);
+      }
+
+      /* buttons */
+      .sc-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        border-radius: var(--radius);
+        font-size: 13.5px; font-weight: 500;
+        padding: 9px 16px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+        font-family: "Inter", sans-serif;
+      }
+      .sc-btn:active { transform: translateY(0.5px); }
+      .sc-btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+      .sc-btn-primary:hover { background: hsl(var(--primary) / 0.9); }
+      .sc-btn-outline { background: hsl(var(--card)); border-color: hsl(var(--border)); color: hsl(var(--foreground)); }
+      .sc-btn-outline:hover { background: hsl(var(--muted)); }
+      .sc-btn-ghost { background: transparent; color: hsl(var(--muted-foreground)); }
+      .sc-btn-ghost:hover { background: hsl(var(--muted)); color: hsl(var(--foreground)); }
+
+      .sc-badge {
+        display: inline-flex; align-items: center;
+        border: 1px solid hsl(var(--border));
+        border-radius: 999px;
+        padding: 3px 10px;
+        font-size: 11px;
+        font-weight: 500;
+        color: hsl(var(--muted-foreground));
+        background: hsl(var(--card));
+      }
+
+      /* signature upload zone, shadcn dropzone feel */
+      .sig-upload-zone {
+        border: 1px dashed hsl(var(--border));
+        border-radius: var(--radius);
+        background: hsl(var(--card));
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 6px; padding: 18px 12px; position: relative;
+      }
+      .sig-upload-zone:hover { border-color: hsl(var(--foreground) / 0.3); background: hsl(var(--muted) / 0.5); }
+      .sig-upload-zone.has-sig { border-style: solid; }
+      .sig-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; border: none; padding: 0; }
+      .sig-preview-thumb { max-height: 52px; max-width: 100%; object-fit: contain; display: none; border-radius: 3px; }
+      .sig-upload-label { font-size: 11.5px; color: hsl(var(--muted-foreground)); text-align: center; pointer-events: none; line-height: 1.4; }
+      .sig-upload-icon { font-size: 20px; line-height: 1; pointer-events: none; opacity: 0.6; }
+      .sig-clear-btn {
+        position: absolute; top: 6px; right: 8px; background: hsl(var(--card));
+        border: 1px solid hsl(var(--border)); border-radius: 999px; width: 20px; height: 20px;
+        cursor: pointer; font-size: 11px; color: hsl(var(--muted-foreground));
+        display: none; z-index: 2; line-height: 1; align-items: center; justify-content: center;
+      }
+      .sig-clear-btn:hover { color: hsl(var(--foreground)); border-color: hsl(var(--foreground) / 0.3); }
+
+      /* ── FORM PREVIEW (printed document — kept as a formal paper form) ── */
       #preview {
         overflow: hidden;
         font-family: "IBM Plex Sans", sans-serif;
@@ -65,56 +214,7 @@
       .sig-footer-cell:last-child { border-right: none; }
       #p-empSig { max-width: 100%; max-height: 48px; object-fit: contain; display: none; }
 
-      /* ── UI SHELL ── */
-      .app-header { background: var(--ink); color: #fff; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
-      .app-title { font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: 0.15em; color: #ccc; }
-      .app-brand { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-
-      input, select, textarea { font-family: "IBM Plex Sans", sans-serif; }
-      .field-group label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rule); }
-      .field-group input, .field-group select, .field-group textarea {
-        background: #fff; border: 1.5px solid #ccc; border-radius: 4px;
-        padding: 8px 10px; font-size: 13px; width: 100%; color: var(--ink);
-        transition: border-color 0.2s; outline: none;
-      }
-      .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--accent); }
-      .checkbox-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px 8px; }
-      .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; cursor: pointer; }
-      .checkbox-item input { width: auto; }
-
-      /* ── SIGNATURE UPLOAD ZONE ── */
-      .sig-upload-zone {
-        border: 2px dashed #ccc; border-radius: 6px; background: #fff; cursor: pointer;
-        transition: border-color 0.2s, background 0.2s; display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 6px; padding: 14px 10px; position: relative;
-      }
-      .sig-upload-zone:hover { border-color: var(--accent); background: #fdf8f7; }
-      .sig-upload-zone.has-sig { border-style: solid; border-color: #bbb; }
-      .sig-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; border: none; padding: 0; }
-      .sig-preview-thumb { max-height: 52px; max-width: 100%; object-fit: contain; display: none; border-radius: 3px; }
-      .sig-upload-label { font-size: 11px; color: #888; font-family: "IBM Plex Mono", monospace; letter-spacing: 0.06em; pointer-events: none; text-align: center; }
-      .sig-upload-icon { font-size: 22px; line-height: 1; pointer-events: none; }
-      .sig-clear-btn { position: absolute; top: 6px; right: 8px; background: none; border: none; cursor: pointer; font-size: 14px; color: #999; display: none; z-index: 2; line-height: 1; }
-      .sig-clear-btn:hover { color: var(--accent); }
-
-      /* ── BUTTONS ── */
-      .btn-primary {
-        background: var(--accent); color: #fff; font-family: "IBM Plex Mono", monospace;
-        font-size: 12px; letter-spacing: 0.1em; font-weight: 600; border: none;
-        padding: 12px 28px; cursor: pointer; transition: opacity 0.2s, transform 0.1s; border-radius: 3px;
-      }
-      .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-      .btn-secondary {
-        background: transparent; color: var(--ink); font-family: "IBM Plex Mono", monospace;
-        font-size: 11px; letter-spacing: 0.08em; border: 1.5px solid var(--rule);
-        padding: 12px 22px; cursor: pointer; border-radius: 3px; transition: background 0.2s;
-      }
-      .btn-secondary:hover { background: #e0ddd6; }
-
       /* ── PRINT / PDF STYLES ── */
-      /* Hidden PDF iframe wrapper */
-      #pdf-frame { display: none; }
-
       @media print {
         body * { visibility: hidden; }
         #preview, #preview * { visibility: visible; }
@@ -134,197 +234,205 @@
   </head>
   <body>
     <!-- HEADER -->
-    <div class="app-header">
-      <div>
-        <div class="app-title">DOCUMENT GENERATOR</div>
-        <div class="app-brand">Leave Application Form</div>
+    <div class="border-b" style="border-color: hsl(var(--border)); background: hsl(var(--card));">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center justify-center rounded-md" style="width:32px;height:32px;background:hsl(var(--primary));color:hsl(var(--primary-foreground));font-size:14px;font-weight:700;">L</div>
+          <div>
+            <div style="font-size:14.5px;font-weight:600;color:hsl(var(--foreground));">Leave Application Form</div>
+            <div style="font-size:11.5px;color:hsl(var(--muted-foreground));">Document generator</div>
+          </div>
+        </div>
+        <span class="sc-badge">Bridge Digital Transformations Inc.</span>
       </div>
-      <div style="font-size:11px;color:#888;font-family:'IBM Plex Mono',monospace;">Bridge Digital Transformations Inc.</div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 xl:grid-cols-2 gap-10">
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
       <!-- LEFT: INPUT PANEL -->
-      <div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#666;margin-bottom:20px;text-transform:uppercase;">Fill in the fields below</div>
+      <div class="sc-card p-6">
+        <div class="sc-section-title mb-5">Fill in the fields below</div>
 
         <div class="space-y-5">
           <div class="grid grid-cols-2 gap-4">
-            <div class="field-group space-y-1">
-              <label>Employee's Name</label>
-              <input type="text" id="empName" placeholder="Full Name" oninput="update()" />
+            <div>
+              <label class="sc-label">Employee's name</label>
+              <input type="text" id="empName" class="sc-input" placeholder="Full name" oninput="update()" />
             </div>
-            <div class="field-group space-y-1">
-              <label>Position</label>
-              <input type="text" id="position" placeholder="Job Title" oninput="update()" />
+            <div>
+              <label class="sc-label">Position</label>
+              <input type="text" id="position" class="sc-input" placeholder="Job title" oninput="update()" />
             </div>
           </div>
 
-          <div class="field-group space-y-1">
-            <label>Employment Status</label>
+          <div>
+            <label class="sc-label">Employment status</label>
             <div class="flex gap-6 mt-1">
-              <label class="flex items-center gap-2 text-sm cursor-pointer">
-                <input type="radio" name="empStatus" value="REG" onchange="update()" checked /> Regular
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));">
+                <input type="radio" class="sc-radio" name="empStatus" value="REG" onchange="update()" checked /> Regular
               </label>
-              <label class="flex items-center gap-2 text-sm cursor-pointer">
-                <input type="radio" name="empStatus" value="PROB" onchange="update()" /> Probationary
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));">
+                <input type="radio" class="sc-radio" name="empStatus" value="PROB" onchange="update()" /> Probationary
               </label>
             </div>
           </div>
 
-          <div class="field-group space-y-1" style="max-width:220px">
-            <label>Date Filed</label>
-            <input type="date" id="dateFiled" oninput="update()" />
+          <div style="max-width:220px">
+            <label class="sc-label">Date filed</label>
+            <input type="date" id="dateFiled" class="sc-input" oninput="update()" />
           </div>
 
-          <div class="field-group space-y-2">
-            <label>Type of Leave Applied For</label>
-            <div class="checkbox-grid mt-1">
-              <label class="checkbox-item"><input type="checkbox" value="VL"  onchange="update()" /> VL</label>
-              <label class="checkbox-item"><input type="checkbox" value="BRL" onchange="update()" /> BRL</label>
-              <label class="checkbox-item"><input type="checkbox" value="ML"  onchange="update()" /> ML</label>
-              <label class="checkbox-item"><input type="checkbox" value="AWP" onchange="update()" /> AWP</label>
-              <label class="checkbox-item"><input type="checkbox" value="SL"  onchange="update()" /> SL</label>
-              <label class="checkbox-item"><input type="checkbox" value="EL"  onchange="update()" /> EL</label>
-              <label class="checkbox-item"><input type="checkbox" value="BL"  onchange="update()" /> BL</label>
-              <label class="checkbox-item"><input type="checkbox" value="PL"  onchange="update()" /> PL</label>
+          <div>
+            <label class="sc-label">Type of leave applied for</label>
+            <div class="grid grid-cols-4 gap-x-4 gap-y-2 mt-1">
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="VL"  onchange="update()" /> VL</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="BRL" onchange="update()" /> BRL</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="ML"  onchange="update()" /> ML</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="AWP" onchange="update()" /> AWP</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="SL"  onchange="update()" /> SL</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="EL"  onchange="update()" /> EL</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="BL"  onchange="update()" /> BL</label>
+              <label class="flex items-center gap-2 text-sm cursor-pointer" style="color:hsl(var(--foreground));"><input type="checkbox" class="sc-checkbox" value="PL"  onchange="update()" /> PL</label>
             </div>
           </div>
 
-          <div class="field-group space-y-1">
-            <label>Purpose of Leave</label>
-            <textarea id="purpose" rows="3" placeholder="State the reason for leave…" oninput="update()"></textarea>
+          <div>
+            <label class="sc-label">Purpose of leave</label>
+            <textarea id="purpose" class="sc-textarea" rows="3" placeholder="State the reason for leave…" oninput="update()"></textarea>
           </div>
 
           <div class="grid grid-cols-3 gap-4">
-            <div class="field-group space-y-1">
-              <label>From</label>
-              <input type="date" id="leaveFrom" oninput="update()" />
+            <div>
+              <label class="sc-label">From</label>
+              <input type="date" id="leaveFrom" class="sc-input" oninput="update()" />
             </div>
-            <div class="field-group space-y-1">
-              <label>To</label>
-              <input type="date" id="leaveTo" oninput="update()" />
+            <div>
+              <label class="sc-label">To</label>
+              <input type="date" id="leaveTo" class="sc-input" oninput="update()" />
             </div>
-            <div class="field-group space-y-1">
-              <label>No. Hours/Days</label>
-              <input type="text" id="noHours" placeholder="e.g. 8 hrs / 1 day" oninput="update()" />
+            <div>
+              <label class="sc-label">No. hours/days</label>
+              <input type="text" id="noHours" class="sc-input" placeholder="e.g. 8 hrs" oninput="update()" />
             </div>
           </div>
 
           <!-- Employee Signature Upload -->
-          <div class="field-group space-y-2">
-            <label>Employee's Signature</label>
+          <div>
+            <label class="sc-label">Employee's signature</label>
             <div class="sig-upload-zone" id="sigUploadZone">
               <input type="file" id="sigFile" accept="image/*" onchange="handleSigUpload(event)" />
               <button class="sig-clear-btn" id="sigClearBtn" onclick="clearSig(event)" title="Remove signature">✕</button>
               <img id="sigThumb" class="sig-preview-thumb" alt="Signature preview" />
               <div class="sig-upload-icon" id="sigUploadIcon">✍️</div>
-              <div class="sig-upload-label" id="sigUploadLabel">Click or drag to upload signature image<br/><span style="font-size:10px;opacity:0.7;">PNG with transparent background works best</span></div>
+              <div class="sig-upload-label" id="sigUploadLabel">Click or drag to upload a signature image<br/><span style="opacity:0.7;">PNG with transparent background works best</span></div>
             </div>
           </div>
 
-          <div class="field-group space-y-1" style="max-width:300px">
-            <label>Noted By (Chief-of-Staff)</label>
-            <input type="text" id="notedBy" value="Elkin Lao" oninput="update()" />
-          </div>
-
-          <div class="field-group space-y-1" style="max-width:300px">
-            <label>Approved By</label>
-            <input type="text" id="approvedBy" placeholder="Name" oninput="update()" />
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="sc-label">Noted by (Chief-of-Staff)</label>
+              <input type="text" id="notedBy" class="sc-input" value="Elkin Lao" oninput="update()" />
+            </div>
+            <div>
+              <label class="sc-label">Approved by</label>
+              <input type="text" id="approvedBy" class="sc-input" placeholder="Name" oninput="update()" />
+            </div>
           </div>
         </div>
 
         <!-- ACTIONS -->
-        <div class="flex flex-wrap gap-3 mt-8">
-          <button class="btn-primary" onclick="downloadPDF()">⬇ Download PDF (A4)</button>
-          <button class="btn-secondary" onclick="window.print()">⎙ Print</button>
-          <button class="btn-secondary" onclick="resetForm()">↺ Reset</button>
+        <div class="flex flex-wrap gap-3 mt-8 pt-6" style="border-top:1px solid hsl(var(--border));">
+          <button class="sc-btn sc-btn-primary" onclick="downloadPDF()">Download PDF (A4)</button>
+          <button class="sc-btn sc-btn-outline" onclick="window.print()">Print</button>
+          <button class="sc-btn sc-btn-ghost" onclick="resetForm()">Reset</button>
         </div>
-        <p style="font-size:10px;color:#999;font-family:'IBM Plex Mono',monospace;margin-top:10px;">
+        <p style="font-size:11.5px;color:hsl(var(--muted-foreground));margin-top:12px;">
           PDF tip: in the save dialog, set "Destination" to "Save as PDF" and paper to A4.
         </p>
       </div>
 
       <!-- RIGHT: PREVIEW -->
       <div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#666;margin-bottom:20px;text-transform:uppercase;">Live Preview</div>
-        <div style="overflow-x:auto">
-          <div id="preview">
-            <div class="preview-header-company">
-              <div class="company-name">BRIDGE DIGITAL TRANSFORMATIONS INC.</div>
-              <div class="company-address">BiBu Square, Liwayway Village, Magugpo East Tagum City, DDN</div>
-            </div>
-            <div class="form-title-bar">LEAVE APPLICATION FORM</div>
-            <div class="form-row">
-              <div class="form-cell" style="flex:2.5">
-                <span class="cell-label">EMPLOYEE'S NAME</span>
-                <div class="cell-value" id="p-empName">&nbsp;</div>
+        <div class="sc-card p-6">
+          <div class="sc-section-title mb-5">Live preview</div>
+          <div style="overflow-x:auto">
+            <div id="preview">
+              <div class="preview-header-company">
+                <div class="company-name">BRIDGE DIGITAL TRANSFORMATIONS INC.</div>
+                <div class="company-address">BiBu Square, Liwayway Village, Magugpo East Tagum City, DDN</div>
               </div>
-              <div class="form-cell" style="flex:2">
-                <span class="cell-label">POSITION</span>
-                <div class="cell-value" id="p-position">&nbsp;</div>
-              </div>
-              <div class="form-cell" style="flex:1;min-width:90px">
-                <span class="cell-label">Employment Status</span>
-                <div class="emp-status-box">
-                  <div class="status-row"><span class="check-box" id="p-reg-box"></span> REG</div>
-                  <div class="status-row"><span class="check-box" id="p-prob-box"></span> PROB</div>
+              <div class="form-title-bar">LEAVE APPLICATION FORM</div>
+              <div class="form-row">
+                <div class="form-cell" style="flex:2.5">
+                  <span class="cell-label">EMPLOYEE'S NAME</span>
+                  <div class="cell-value" id="p-empName">&nbsp;</div>
+                </div>
+                <div class="form-cell" style="flex:2">
+                  <span class="cell-label">POSITION</span>
+                  <div class="cell-value" id="p-position">&nbsp;</div>
+                </div>
+                <div class="form-cell" style="flex:1;min-width:90px">
+                  <span class="cell-label">Employment Status</span>
+                  <div class="emp-status-box">
+                    <div class="status-row"><span class="check-box" id="p-reg-box"></span> REG</div>
+                    <div class="status-row"><span class="check-box" id="p-prob-box"></span> PROB</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell" style="flex:3">
-                <span class="cell-label">Type of Leave Applied for</span>
-                <div class="leave-types-grid" id="p-leaveTypes"></div>
+              <div class="form-row">
+                <div class="form-cell" style="flex:3">
+                  <span class="cell-label">Type of Leave Applied for</span>
+                  <div class="leave-types-grid" id="p-leaveTypes"></div>
+                </div>
+                <div class="form-cell" style="flex:1.2">
+                  <span class="cell-label">Date Filed</span>
+                  <div class="cell-value" id="p-dateFiled">&nbsp;</div>
+                </div>
               </div>
-              <div class="form-cell" style="flex:1.2">
-                <span class="cell-label">Date Filed</span>
-                <div class="cell-value" id="p-dateFiled">&nbsp;</div>
+              <div class="purpose-cell">
+                <span class="cell-label">Purpose of Leave</span>
+                <div style="font-size:11px;font-weight:600;margin-top:4px;white-space:pre-wrap;" id="p-purpose">&nbsp;</div>
               </div>
-            </div>
-            <div class="purpose-cell">
-              <span class="cell-label">Purpose of Leave</span>
-              <div style="font-size:11px;font-weight:600;margin-top:4px;white-space:pre-wrap;" id="p-purpose">&nbsp;</div>
-            </div>
-            <div class="duration-header">DURATION OF LEAVE</div>
-            <div class="duration-sub">
-              <div class="duration-dates">INCLUSIVE DATES</div>
-              <div class="duration-hours">NO. HOURS/DAYS</div>
-            </div>
-            <div class="duration-row">
-              <div class="duration-from">
-                FROM<br />
-                <div style="font-size:11px;font-weight:600;margin-top:6px" id="p-leaveFrom">&nbsp;</div>
+              <div class="duration-header">DURATION OF LEAVE</div>
+              <div class="duration-sub">
+                <div class="duration-dates">INCLUSIVE DATES</div>
+                <div class="duration-hours">NO. HOURS/DAYS</div>
               </div>
-              <div class="duration-to">
-                TO<br />
-                <div style="font-size:11px;font-weight:600;margin-top:6px" id="p-leaveTo">&nbsp;</div>
+              <div class="duration-row">
+                <div class="duration-from">
+                  FROM<br />
+                  <div style="font-size:11px;font-weight:600;margin-top:6px" id="p-leaveFrom">&nbsp;</div>
+                </div>
+                <div class="duration-to">
+                  TO<br />
+                  <div style="font-size:11px;font-weight:600;margin-top:6px" id="p-leaveTo">&nbsp;</div>
+                </div>
+                <div class="duration-hrs-val">
+                  <div style="font-size:11px;font-weight:600;margin-top:18px" id="p-noHours">&nbsp;</div>
+                </div>
               </div>
-              <div class="duration-hrs-val">
-                <div style="font-size:11px;font-weight:600;margin-top:18px" id="p-noHours">&nbsp;</div>
+              <div class="sig-row">
+                <div class="sig-cell" style="flex:1">
+                  <img id="p-empSig" alt="Employee Signature" />
+                </div>
+                <div class="sig-cell" style="flex:1">&nbsp;</div>
+                <div class="sig-cell" style="flex:1">
+                  <div class="sig-name" id="p-notedBy">Elkin Lao</div>
+                </div>
+                <div class="sig-cell" style="flex:1">
+                  <div class="sig-name" id="p-approvedBy">&nbsp;</div>
+                </div>
               </div>
-            </div>
-            <div class="sig-row">
-              <div class="sig-cell" style="flex:1">
-                <img id="p-empSig" alt="Employee Signature" />
+              <div class="sig-footer-row">
+                <div class="sig-footer-cell">Employee's Signature</div>
+                <div class="sig-footer-cell">Immediate Supervisor</div>
+                <div class="sig-footer-cell">Chief-of-Staff</div>
+                <div class="sig-footer-cell">NGT &nbsp;/&nbsp; DTK</div>
               </div>
-              <div class="sig-cell" style="flex:1">&nbsp;</div>
-              <div class="sig-cell" style="flex:1">
-                <div class="sig-name" id="p-notedBy">Elkin Lao</div>
-              </div>
-              <div class="sig-cell" style="flex:1">
-                <div class="sig-name" id="p-approvedBy">&nbsp;</div>
-              </div>
-            </div>
-            <div class="sig-footer-row">
-              <div class="sig-footer-cell">Employee's Signature</div>
-              <div class="sig-footer-cell">Immediate Supervisor</div>
-              <div class="sig-footer-cell">Chief-of-Staff</div>
-              <div class="sig-footer-cell">NGT &nbsp;/&nbsp; DTK</div>
             </div>
           </div>
-        </div>
-        <div style="font-size:10px;color:#999;font-family:'IBM Plex Mono',monospace;margin-top:10px;">
-          A4 · optimised for PDF download &amp; print
+          <div style="font-size:11px;color:hsl(var(--muted-foreground));margin-top:12px;">
+            A4 · optimised for PDF download &amp; print
+          </div>
         </div>
       </div>
     </div>
@@ -350,7 +458,7 @@
         const df = document.getElementById("dateFiled").value;
         document.getElementById("p-dateFiled").textContent = df ? fmt(df) : "\u00A0";
 
-        const checked = [...document.querySelectorAll(".checkbox-item input:checked")].map(el => el.value);
+        const checked = [...document.querySelectorAll("input.sc-checkbox:checked")].map(el => el.value);
         const leaveContainer = document.getElementById("p-leaveTypes");
         leaveContainer.innerHTML = "";
         [["VL","BRL","ML","AWP"], ["EL","BL","PL","SL"]].forEach(row => {
@@ -402,7 +510,7 @@
           thumb.style.display = "block";
           document.getElementById("sigUploadIcon").style.display = "none";
           document.getElementById("sigUploadLabel").style.display = "none";
-          document.getElementById("sigClearBtn").style.display = "block";
+          document.getElementById("sigClearBtn").style.display = "flex";
           document.getElementById("sigUploadZone").classList.add("has-sig");
           update();
         };
@@ -425,7 +533,7 @@
 
       function resetForm() {
         document.querySelectorAll("input[type=text], input[type=date], textarea").forEach(el => el.value = "");
-        document.querySelectorAll(".checkbox-item input").forEach(el => el.checked = false);
+        document.querySelectorAll("input.sc-checkbox").forEach(el => el.checked = false);
         document.querySelector('input[name="empStatus"][value="REG"]').checked = true;
         document.getElementById("notedBy").value = "Elkin Lao";
         clearSig({ stopPropagation: () => {} });
